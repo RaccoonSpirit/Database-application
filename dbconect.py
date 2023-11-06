@@ -12,7 +12,8 @@ class dbworker:
     def get(self):
       with self.connection:
         mySQLQuery = ("""SELECT TOP (1000) [Id_Weapon],[Type_of_weapon],[Quantity],[Name] FROM [Military_unit].[dbo].[Weapon]""")
-        result = self.cursor.execute(mySQLQuery).fetchall()
+        res = self.cursor.execute(mySQLQuery).fetchall()
+        result = [list(item) for item in res]
         return result
 db = dbworker('Military_unit')
 print(db.get())

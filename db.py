@@ -23,7 +23,8 @@ def user():
   FROM [Military_unit].[dbo].[Weapon]""")
   
   res  = cursor.execute(mySQLQuery).fetchall()
-  return res
+  result = [list(item) for item in res]
+  return result
 print(user())
 
 
