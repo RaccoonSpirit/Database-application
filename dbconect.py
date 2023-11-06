@@ -6,7 +6,7 @@ class dbworker:
       DATABASE = database
       username = 'sa'
       password = 'Pava01))'
-      connectionString = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER}; DATABASE={DATABASE};UID={username};PWD={password}'
+      connectionString = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};UID={username};PWD={password}'
       self.connection = pyodbc.connect(connectionString) 
       self.cursor = self.connection.cursor()
     def get(self):
