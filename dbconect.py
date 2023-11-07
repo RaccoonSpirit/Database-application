@@ -21,12 +21,23 @@ class dbworker:
         res = self.cursor.execute(mySQLQuery).fetchall()
         result = [list(item) for item in res]
         return result
-    def search_serviceman(self, fio):
+    def search_serviceman(self, text):
       with self.connection:
         mySQLQuery = ('SELECT FIO, Date_of_birth, Branch_number, Rank FROM Servicemans WHERE FIO = ?')
-        res = self.cursor.execute(mySQLQuery, (fio,)).fetchall()
+        res = self.cursor.execute(mySQLQuery, (text,)).fetchall()
+        if res == []:
+          mySQLQuery = ('SELECT Type_of_weapon, Quantity, Name FROM Weapon WHERE Name = ?')
+          res = self.cursor.execute(mySQLQuery, (text,)).fetchall()
         result = [list(item) for item in res]
         return result
-
-   
+    def get_serviceman_weapon(self):
+      with self.connection:
+        mySQLQuery = ('SELECT Type_of_weapon, Quantity, Name FROM Weapon WHERE Name = ?')
+        res = self.cursor.execute(mySQLQuery).fetchall()
+        result = [list(item) for item in res]
+        return result
+        
+      
+      
+     
 

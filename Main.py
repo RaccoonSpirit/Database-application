@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import (QMainWindow, QMenu, QApplication, 
                              QTableView, QVBoxLayout,QLineEdit,QDialogButtonBox, 
-                             QDialog)
+                             QDialog, QLabel)
 from dbconect import dbworker
 from PyQt6 import QtCore
 from PyQt6.QtGui import QAction
@@ -15,24 +15,22 @@ class TableModel(QtCore.QAbstractTableModel):
         self._data = data
     def data(self, index, role):
         if role == Qt.ItemDataRole.DisplayRole:
-            
             return self._data[index.row()][index.column()]
 
     def rowCount(self, index):
-        
         return len(self._data)
 
     def columnCount(self, index):
-        
         return len(self._data[0])
 
 class TextDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Диалоговое окно")
-
+        self.label = QLabel("Введите ФИО военнослужащего или название вооружения")
         self.text_input = QLineEdit()
         layout = QVBoxLayout()
+        layout.addWidget(self.label)
         layout.addWidget(self.text_input)
         self.setLayout(layout)
 
@@ -60,7 +58,7 @@ class MainWindow(QMainWindow):
         output_table.addAction(table_weapon)
         output_table.addAction(servicemans_weapon)
         
-        add_record = QAction('Добавить зпаись в бд', self)
+        add_record = QAction('Поиск по бд', self)
         add_record.triggered.connect(self.data_entry)
         
         fileMenu.addAction(add_record)
@@ -76,16 +74,21 @@ class MainWindow(QMainWindow):
             
     def output_table(self, data:list):
         '''Метод выводящий таблицу'''
-        self.table = QTableView()
-        self.model = TableModel(data)
-        self.table.setModel(self.model)
-        self.setCentralWidget(self.table)
-    
+        if data != []:
+            self.table = QTableView()
+            self.model = TableModel(data)
+            self.table.setModel(self.model)
+            self.setCentralWidget(self.table)
+        else:
+            label = QLabel("Ничего не найдено")
+            font = label.font()
+            font.setPointSize(20)
+            label.setFont(font)
+            label.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+            self.setCentralWidget(label)
 
 
 app = QApplication(sys.argv)
-
 window = MainWindow()
 window.show()
-
 app.exec()
