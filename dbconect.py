@@ -1,7 +1,7 @@
 import pyodbc
 
 class dbworker:
-    def __init__(self, database):
+    def __init__(self, database:str):
       SERVER = '192.168.0.5'
       DATABASE = database
       username = 'sa'
@@ -21,5 +21,12 @@ class dbworker:
         res = self.cursor.execute(mySQLQuery).fetchall()
         result = [list(item) for item in res]
         return result
-db = dbworker('Military_unit')
-print(db.get_serviceman())
+    def search_serviceman(self, fio):
+      with self.connection:
+        mySQLQuery = ('SELECT FIO, Date_of_birth, Branch_number, Rank FROM Servicemans WHERE FIO = ?')
+        res = self.cursor.execute(mySQLQuery, (fio,)).fetchall()
+        result = [list(item) for item in res]
+        return result
+
+   
+
