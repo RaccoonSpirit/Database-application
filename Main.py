@@ -32,15 +32,14 @@ class MainWindow(QMainWindow):
         menubar = self.menuBar()
         fileMenu = menubar.addMenu('Меню')
         output_table = QMenu('Вывести таблицу', self)
-        table_division = QAction('Таблица отделения', self)
         table_servicemans = QAction('Таблица военнослужащие', self)
         table_weapon = QAction('Таблица вооружение', self)
-        table_division.triggered.connect(self.onMyToolBarButtonClick)
-        table_servicemans.triggered.connect(self.onMyToolBarButtonClick)
-        table_weapon.triggered.connect(self.onMyToolBarButtonClick)
-        output_table.addAction(table_division)
+        servicemans_weapon = QAction('Военнослужащие и их вооружение', self)
+        table_servicemans.triggered.connect(self.showServiceman)
+        table_weapon.triggered.connect(self.showWeapon)
         output_table.addAction(table_servicemans)
         output_table.addAction(table_weapon)
+        output_table.addAction(servicemans_weapon)
         
 
         add_record = QAction('Добавить зпаись в бд', self)
@@ -57,13 +56,20 @@ class MainWindow(QMainWindow):
 
         
         
-    def onMyToolBarButtonClick(self):
+    def showServiceman(self):
+        '''Метод выводящий всех военнослужащих'''
         self.table = QTableView()
-
-        self.model = TableModel(db.get())
+        self.model = TableModel(db.get_serviceman())
         self.table.setModel(self.model)
-
         self.setCentralWidget(self.table)
+    
+    def showWeapon(self):
+        '''Метод выводящий всего воооружения'''
+        self.table = QTableView()
+        self.model = TableModel(db.get_weapon())
+        self.table.setModel(self.model)
+        self.setCentralWidget(self.table)
+
 
 
 app = QApplication(sys.argv)
