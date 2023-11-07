@@ -15,5 +15,3 @@ class dbworker:
         res = self.cursor.execute(mySQLQuery).fetchall()
         result = [list(item) for item in res]
         return result
-db = dbworker('Military_unit')
-print(db.get())
