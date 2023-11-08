@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import (QVBoxLayout,QLineEdit,QDialogButtonBox, 
                              QDialog, QLabel)
 
+'''Окно поиска'''
 class TextDialogSearch(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -17,6 +18,7 @@ class TextDialogSearch(QDialog):
         layout.addWidget(button_box)
     def get_text(self):
         return self.text_input.text()
+'''Окно добавление новой записи'''
 class TextDialogAdd(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -51,7 +53,8 @@ class TextDialogAdd(QDialog):
 
     def get_text(self):
         return [self.text_input_fio.text(),self.text_input_date.text(),self.text_input_branch_number.text(),self.text_input_rank.text(),self.text_input_name_weapon.text()]
-class Login(QDialog):
+'''Окно авторизации'''
+class TextDialogLogin(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Авторизация")

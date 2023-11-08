@@ -2,32 +2,22 @@ import sys
 from PyQt6.QtWidgets import (QMainWindow, QMenu, QApplication, 
                              QTableView, QDialog, QLabel)
 from dbconect import dbworker
-from PyQt6 import QtCore
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
 from TextDialog import TextDialogAdd, TextDialogSearch
+from TableModel import TableModel
 db = dbworker('Military_unit')
 
-class TableModel(QtCore.QAbstractTableModel):
-    def __init__(self, data):
-        super(TableModel, self).__init__()
-        self._data = data
-    def data(self, index, role):
-        if role == Qt.ItemDataRole.DisplayRole:
-            return self._data[index.row()][index.column()]
 
-    def rowCount(self, index):
-        return len(self._data)
-
-    def columnCount(self, index):
-        return len(self._data[0])
           
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-
+        '''Создание меню'''
         menubar = self.menuBar()
         fileMenu = menubar.addMenu('Меню')
+        
+        '''Пункт вывести таблицу'''
         output_table = QMenu('Вывести таблицу', self)
         table_servicemans = QAction('Таблица военнослужащие', self)
         table_weapon = QAction('Таблица вооружение', self)
@@ -38,28 +28,36 @@ class MainWindow(QMainWindow):
         output_table.addAction(table_weapon)
         output_table.addAction(servicemans_weapon)
         
+        '''Пункт поиск по бд'''
         search_record = QAction('Поиск по бд', self)
         search_record.triggered.connect(self.data_search)
+        
+        '''Пункт добавить новую запись в бд'''
         add_record = QAction('Добавить запись в бд', self)
         add_record.triggered.connect(self.data_add)
         
+        '''Отображение всех пунктов меню в окне'''
         fileMenu.addAction(search_record)
         fileMenu.addAction(add_record)
         fileMenu.addMenu(output_table)
         self.setGeometry(500, 300, 750, 550)
         self.setWindowTitle('Приложение для работы с бд')
     
+    
     def data_search(self):
+        '''Поиск'''
         dialog = TextDialogSearch(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             text = dialog.get_text()
             self.output_table(db.search_serviceman(text))
+    
     def data_add(self):
+        '''Добавление новой записи'''
         dialog = TextDialogAdd(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             text = dialog.get_text()
             print(text)
-            
+    
     def output_table(self, data:list):
         '''Метод выводящий таблицу'''
         if data != []:

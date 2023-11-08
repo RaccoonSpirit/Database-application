@@ -37,8 +37,7 @@ class dbworker:
         result = [list(item) for item in res]
         return result
          
-db = dbworker('Military_unit')        
-print(db.get_serviceman())
+
         
       
      
