@@ -1,19 +1,56 @@
 import sys
 from PyQt6.QtWidgets import (QMainWindow, QMenu, QApplication, 
-                             QTableView, QDialog, QLabel)
+                             QTableView, QDialog, QLabel, QVBoxLayout, QLineEdit,QPushButton,QMessageBox)
 from dbconect import dbworker
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
 from TextDialog import TextDialogAdd, TextDialogSearch
 from TableModel import TableModel
 
+ 
+class Login(QDialog):
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+
+        self.input_adress = QLineEdit()
+        self.input_login = QLineEdit()
+        self.input_password = QLineEdit()
+        self.input_password.setEchoMode(QLineEdit.EchoMode.Password)
+
+        login_button = QPushButton('Login')
+        login_button.clicked.connect(self.login)
+
+        layout.addWidget(QLabel('Адрес:'))
+        layout.addWidget(self.input_adress)
+        layout.addWidget(QLabel('Логин:'))
+        layout.addWidget(self.input_login)
+        layout.addWidget(QLabel('Пароль:'))
+        layout.addWidget(self.input_password)
+        layout.addWidget(login_button)
+
+        self.setLayout(layout)
+        self.setWindowTitle('Login')
+    def login(self):
+        adress = self.input_adress.text()
+        username = self.input_login.text()
+        password = self.input_password.text()
+        # Здесь должна быть проверка логина и пароля
+        # Предположим, что просто проверяем, что логин и пароль не пустые
+        if username and password and adress:
+            main_app_window = MainWindow()
+            main_app_window.show()
+            self.close()
+        else:
+            msg = QMessageBox()
+            msg.setText('Invalid username or password')
+            msg.exec()
+
 try:
    db = dbworker('Military_unit')
 except:
-        print(f"Error connecting to the database: ") 
-
-
-          
+        print(f"Error connecting to the database: ")  
+        
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -79,6 +116,6 @@ class MainWindow(QMainWindow):
 
 
 app = QApplication(sys.argv)
-window = MainWindow()
+window = Login()
 window.show()
 app.exec()

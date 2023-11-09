@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import (QVBoxLayout,QLineEdit,QDialogButtonBox, 
-                             QDialog, QLabel)
+                             QDialog, QLabel,QMessageBox,QPushButton)
+
 
 '''Окно поиска'''
 class TextDialogSearch(QDialog):
@@ -54,27 +55,5 @@ class TextDialogAdd(QDialog):
     def get_text(self) -> list:
         return [self.text_input_fio.text(),self.text_input_date.text(),self.text_input_branch_number.text(),self.text_input_rank.text(),self.text_input_name_weapon.text()]
 '''Окно авторизации'''
-class TextDialogLogin(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("Авторизация")
-        self.adress = QLabel("Введите адрес базы данных")
-        self.input_adress = QLineEdit()
-        self.login = QLabel("Введите логин")
-        self.input_login = QLineEdit()
-        self.password = QLabel("Введите пароль")
-        self.input_password = QLineEdit()
-        layout = QVBoxLayout()
-        layout.addWidget(self.adress)
-        layout.addWidget(self.input_adress)
-        layout.addWidget(self.login)
-        layout.addWidget(self.input_login)
-        layout.addWidget(self.password)
-        layout.addWidget(self.input_password)
-        self.setLayout(layout)
-        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
-        button_box.accepted.connect(self.accept)
-        button_box.rejected.connect(self.reject)
-        layout.addWidget(button_box)
-    def get_text(self) -> list:
-        return [self.input_adress.text(),self.input_login.text(),self.input_password.text()]
+
+        
