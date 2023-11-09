@@ -6,7 +6,11 @@ from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
 from TextDialog import TextDialogAdd, TextDialogSearch
 from TableModel import TableModel
-db = dbworker('Military_unit')
+
+try:
+   db = dbworker('Military_unit')
+except:
+        print(f"Error connecting to the database: ") 
 
 
           
