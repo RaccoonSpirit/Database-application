@@ -16,7 +16,7 @@ class TextDialogSearch(QDialog):
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
         layout.addWidget(button_box)
-    def get_text(self):
+    def get_text(self) -> str:
         return self.text_input.text()
 '''Окно добавление новой записи'''
 class TextDialogAdd(QDialog):
@@ -51,7 +51,7 @@ class TextDialogAdd(QDialog):
         button_box.rejected.connect(self.reject)
         layout.addWidget(button_box)
 
-    def get_text(self):
+    def get_text(self) -> list:
         return [self.text_input_fio.text(),self.text_input_date.text(),self.text_input_branch_number.text(),self.text_input_rank.text(),self.text_input_name_weapon.text()]
 '''Окно авторизации'''
 class TextDialogLogin(QDialog):
@@ -76,5 +76,5 @@ class TextDialogLogin(QDialog):
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
         layout.addWidget(button_box)
-    def get_text(self):
+    def get_text(self) -> list:
         return [self.input_adress.text(),self.input_login.text(),self.input_password.text()]
