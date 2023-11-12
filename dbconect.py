@@ -1,11 +1,8 @@
 import pyodbc
 
 class dbworker:
-    def __init__(self, database:str):
-      SERVER = '192.168.0.5'
-      username = 'sa'
-      password = 'Pava01))'
-      connectionString = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={database};UID={username};PWD={password}'
+    def __init__(self, database:str, server:str, username:str, password:str):
+      connectionString = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
       self.connection = pyodbc.connect(connectionString) 
       self.cursor = self.connection.cursor()
     def get_serviceman(self) -> list:

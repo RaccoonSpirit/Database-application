@@ -7,10 +7,11 @@ from PyQt6.QtCore import Qt
 from TextDialog import TextDialogAdd, TextDialogSearch
 from TableModel import TableModel
 
- 
+
 class Login(QDialog):
     def __init__(self):
         super().__init__()
+        self.db = None
         layout = QVBoxLayout()
 
         self.input_adress = QLineEdit()
@@ -32,52 +33,52 @@ class Login(QDialog):
         self.setLayout(layout)
         self.setWindowTitle('Login')
     def login(self):
-        adress = self.input_adress.text()
-        username = self.input_login.text()
-        password = self.input_password.text()
-        # Здесь должна быть проверка логина и пароля
-        # Предположим, что просто проверяем, что логин и пароль не пустые
-        if username and password and adress:
-            main_app_window = MainWindow()
-            main_app_window.show()
-            self.close()
-        else:
+        try:
+           self.db = dbworker('Military_unit',self.input_adress.text(), self.input_login.text(), self.input_password.text())
+           main_app_window = MainWindow(self.db)
+           main_app_window.show()
+           self.close()
+        except:
             msg = QMessageBox()
-            msg.setText('Invalid username or password')
+            msg.setText('Invalid data')
             msg.exec()
 
-try:
-   db = dbworker('Military_unit')
-except:
-        print(f"Error connecting to the database: ")  
+
+
+
         
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self,db):
         super(MainWindow, self).__init__()
-        '''Создание меню'''
+        self.db = db
+        # Создание меню
+        
         menubar = self.menuBar()
         fileMenu = menubar.addMenu('Меню')
         
-        '''Пункт вывести таблицу'''
+        # Пункт вывести таблицу
+        
         output_table = QMenu('Вывести таблицу', self)
         table_servicemans = QAction('Таблица военнослужащие', self)
         table_weapon = QAction('Таблица вооружение', self)
         servicemans_weapon = QAction('Военнослужащие и их вооружение', self)
-        table_servicemans.triggered.connect(lambda:self.output_table(db.get_serviceman()))
-        table_weapon.triggered.connect(lambda:self.output_table(db.get_weapon()))
+        table_servicemans.triggered.connect(lambda:self.output_table(self.db.get_serviceman()))
+        table_weapon.triggered.connect(lambda:self.output_table(self.db.get_weapon()))
         output_table.addAction(table_servicemans)
         output_table.addAction(table_weapon)
         output_table.addAction(servicemans_weapon)
         
-        '''Пункт поиск по бд'''
+        # Пункт поиск по бд
+        
         search_record = QAction('Поиск по бд', self)
         search_record.triggered.connect(self.data_search)
         
-        '''Пункт добавить новую запись в бд'''
+        #Пункт добавить новую запись в бд
         add_record = QAction('Добавить запись в бд', self)
         add_record.triggered.connect(self.data_add)
         
-        '''Отображение всех пунктов меню в окне'''
+        # Отображение всех пунктов меню в окне
+        
         fileMenu.addAction(search_record)
         fileMenu.addAction(add_record)
         fileMenu.addMenu(output_table)
@@ -86,21 +87,27 @@ class MainWindow(QMainWindow):
     
     
     def data_search(self):
-        '''Поиск'''
+        
+        # Поиск
+        
         dialog = TextDialogSearch(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             text = dialog.get_text()
-            self.output_table(db.search_serviceman(text))
+            self.output_table(self.db.search_serviceman(text))
     
     def data_add(self):
-        '''Добавление новой записи'''
+        
+        # Добавление новой записи
+        
         dialog = TextDialogAdd(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             text = dialog.get_text()
             print(text)
     
     def output_table(self, data:list):
-        '''Метод выводящий таблицу'''
+        
+        # Метод выводящий таблицу
+        
         if data != []:
             self.table = QTableView()
             self.model = TableModel(data)
@@ -114,8 +121,8 @@ class MainWindow(QMainWindow):
             label.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
             self.setCentralWidget(label)
 
-
 app = QApplication(sys.argv)
+
 window = Login()
 window.show()
 app.exec()

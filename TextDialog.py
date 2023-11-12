@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (QVBoxLayout,QLineEdit,QDialogButtonBox, 
-                             QDialog, QLabel,QMessageBox,QPushButton)
+                             QDialog, QLabel)
 
 
 '''Окно поиска'''
