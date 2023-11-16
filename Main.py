@@ -62,8 +62,8 @@ class MainWindow(QMainWindow):
         table_servicemans = QAction('Таблица военнослужащие', self)
         table_weapon = QAction('Таблица вооружение', self)
         servicemans_weapon = QAction('Военнослужащие и их вооружение', self)
-        table_servicemans.triggered.connect(lambda:self.output_table(self.db.get_serviceman()))
-        table_weapon.triggered.connect(lambda:self.output_table(self.db.get_weapon()))
+        table_servicemans.triggered.connect(lambda:self.output_table(self.db.get_serviceman(),self.db.get_columns('Servicemans')))
+        table_weapon.triggered.connect(lambda:self.output_table(self.db.get_weapon(),self.db.get_columns('Weapon')))
         output_table.addAction(table_servicemans)
         output_table.addAction(table_weapon)
         output_table.addAction(servicemans_weapon)
@@ -93,7 +93,8 @@ class MainWindow(QMainWindow):
         dialog = TextDialogSearch(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             text = dialog.get_text()
-            self.output_table(self.db.search_serviceman(text))
+            data, name_table = self.db.search(text)
+            self.output_table(data ,self.db.get_columns(name_table))
     
     def data_add(self):
         
@@ -104,13 +105,13 @@ class MainWindow(QMainWindow):
             text = dialog.get_text()
             print(text)
     
-    def output_table(self, data:list):
+    def output_table(self, data:list, headers:list):
         
         # Метод выводящий таблицу
         
         if data != []:
             self.table = QTableView()
-            self.model = TableModel(data)
+            self.model = TableModel(data,headers)
             self.table.setModel(self.model)
             self.setCentralWidget(self.table)
         else:

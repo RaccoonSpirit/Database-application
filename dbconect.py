@@ -17,23 +17,27 @@ class dbworker:
         res = self.cursor.execute(mySQLQuery).fetchall()
         result = [list(item) for item in res]
         return result
-    def search_serviceman(self, text:str) -> list:
+    def search(self, text:str) -> list:
       with self.connection:
         mySQLQuery = ('SELECT FIO, Date_of_birth, Branch_number, Rank FROM Servicemans WHERE FIO = ?')
         res = self.cursor.execute(mySQLQuery, (text,)).fetchall()
         if res == []:
           mySQLQuery = ('SELECT Type_of_weapon, Quantity, Name FROM Weapon WHERE Name = ?')
-          res = self.cursor.execute(mySQLQuery, (text,)).fetchall()
-        result = [list(item) for item in res]
-        return result
-    def get_serviceman_weapon(self) -> list:
+          res2 = self.cursor.execute(mySQLQuery, (text,)).fetchall()
+          result = [list(item) for item in res2]
+          return result, 'Weapon'
+        else: 
+          result = [list(item) for item in res]
+          return result, 'Servicemans' 
+    def get_columns(self, name:str) -> list:
       with self.connection:
-        mySQLQuery = ('SELECT Type_of_weapon, Quantity, Name FROM Weapon WHERE Name = ?')
-        res = self.cursor.execute(mySQLQuery).fetchall()
-        result = [list(item) for item in res]
+        mySQLQuery = ('SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ? AND COLUMN_NAME NOT IN (SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = ?);')
+        res = self.cursor.execute(mySQLQuery, (name,name)).fetchall()
+        result = [item[0] for item in res]
         return result
 
-
+db =  dbworker('Military_unit', 'DESKTOP-GT00LT4', 'sa', 'Pava01))')
+print(db.get_columns('Servicemans'))
         
       
      
