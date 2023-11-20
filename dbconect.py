@@ -42,8 +42,6 @@ class dbworker:
         result = [list(item) for item in res]
         return result
 
-db =  dbworker('Military_unit', 'DESKTOP-GT00LT4', 'sa', 'Pava01))')
-print(db.get_weapon_and_serviceman())
         
       
      

@@ -32,7 +32,7 @@ class TextDialogAdd(QDialog):
         self.text_input_branch_number = QLineEdit()
         self.label_rank = QLabel("Звание")
         self.text_input_rank = QLineEdit()
-        self.label_name_weapon = QLabel("Название вооружения")
+        self.label_name_weapon = QLabel("Название вооружения, введите через запятую")
         self.text_input_name_weapon = QLineEdit()
         layout = QVBoxLayout()
         layout.addWidget(self.label_fio)
@@ -53,7 +53,12 @@ class TextDialogAdd(QDialog):
         layout.addWidget(button_box)
 
     def get_text(self) -> list:
-        return [self.text_input_fio.text(),self.text_input_date.text(),self.text_input_branch_number.text(),self.text_input_rank.text(),self.text_input_name_weapon.text()]
+        fio = self.text_input_fio.text()
+        date = self.text_input_date.text() 
+        branch_number = self.text_input_branch_number.text()
+        rank = self.text_input_rank.text()
+        name_weapon = self.text_input_name_weapon.text()
+        return [fio, date, branch_number, rank, name_weapon]
 '''Окно авторизации'''
 
         
