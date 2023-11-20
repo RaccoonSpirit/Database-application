@@ -103,8 +103,9 @@ class MainWindow(QMainWindow):
         
         dialog = TextDialogAdd(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            text = dialog.get_text()
-            print(text)
+            list_data = dialog.get_text()
+            self.db.add_record(list_data)
+            print(list_data)
     
     def output_table(self, data:list, headers:list):
         

@@ -41,6 +41,11 @@ class dbworker:
         res = self.cursor.execute(mySQLQuery).fetchall()
         result = [list(item) for item in res]
         return result
+    def add_record(self, serviceman:list):
+      with self.connection:
+        return self.cursor.execute('INSERT INTO Serviceman (FIO, Date_of_birth, Branch_number, Rank) VALUES(?,?,?,?)',(serviceman[0],serviceman[1],serviceman[2],serviceman[3]))
+        
+      
 
         
       

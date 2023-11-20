@@ -52,13 +52,15 @@ class TextDialogAdd(QDialog):
         button_box.rejected.connect(self.reject)
         layout.addWidget(button_box)
 
-    def get_text(self) -> list:
+    def get_text(self):
         fio = self.text_input_fio.text()
         date = self.text_input_date.text() 
         branch_number = self.text_input_branch_number.text()
         rank = self.text_input_rank.text()
         name_weapon = self.text_input_name_weapon.text()
-        return [fio, date, branch_number, rank, name_weapon]
+        list_weapon = name_weapon.split(",")
+        list_weapon = [word.strip() for word in list_weapon]
+        return [fio, date, branch_number, rank]
 '''Окно авторизации'''
 
         
