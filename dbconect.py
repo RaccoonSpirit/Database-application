@@ -41,9 +41,18 @@ class dbworker:
         res = self.cursor.execute(mySQLQuery).fetchall()
         result = [list(item) for item in res]
         return result
-    def add_record(self, serviceman:list):
+    def add_record(self, serviceman:list, weapons:list):
       with self.connection:
-        return self.cursor.execute('INSERT INTO Serviceman (FIO, Date_of_birth, Branch_number, Rank) VALUES(?,?,?,?)',(serviceman[0],serviceman[1],serviceman[2],serviceman[3]))
+        self.cursor.execute('INSERT INTO Serviceman (FIO, Date_of_birth, Branch_number, Rank) VALUES(?,?,?,?)',(serviceman[0],serviceman[1],serviceman[2],serviceman[3]))
+        serviceman_id = self.cursor.execute('SELECT Id_Serviceman FROM Serviceman WHERE FIO = ? AND Date_of_birth = ? AND Branch_number = ? AND Rank = ?',(serviceman[0],serviceman[1],serviceman[2],serviceman[3])).fetchone()[0] 
+        for weapon in weapons:
+          weapon_id = self.cursor.execute('SELECT Id_Weapon FROM Weapon WHERE Name = ?',(weapon,)).fetchone()[0]
+          self.cursor.execute('INSERT INTO Weapon_and_serviceman (Id_Serviceman, Id_Weapon) VALUES(?,?)',(serviceman_id, weapon_id))
+          print(weapon_id)
+        return 1
+      
+        
+        
         
       
 

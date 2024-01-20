@@ -60,7 +60,7 @@ class TextDialogAdd(QDialog):
         name_weapon = self.text_input_name_weapon.text()
         list_weapon = name_weapon.split(",")
         list_weapon = [word.strip() for word in list_weapon]
-        return [fio, date, branch_number, rank]
+        return [fio, date, branch_number, rank], list_weapon 
 '''Окно авторизации'''
 
         
