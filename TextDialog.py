@@ -66,7 +66,7 @@ class TextDialogDelete(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Удаление записи")
-        self.label = QLabel("Введите ФИО военнослужащего и его дату рождения через пробел")
+        self.label = QLabel("Введите ФИО военнослужащего и его дату рождения через запятую")
         self.text_input = QLineEdit()
         layout = QVBoxLayout()
         layout.addWidget(self.label)
