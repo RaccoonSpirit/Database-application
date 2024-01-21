@@ -48,8 +48,15 @@ class dbworker:
         for weapon in weapons:
           weapon_id = self.cursor.execute('SELECT Id_Weapon FROM Weapon WHERE Name = ?',(weapon,)).fetchone()[0]
           self.cursor.execute('INSERT INTO Weapon_and_serviceman (Id_Serviceman, Id_Weapon) VALUES(?,?)',(serviceman_id, weapon_id))
-          print(weapon_id)
-        return 1
+        return 0
+    def delete_record(self, data:list):
+      with self.connection:
+        id_serviceman = self.cursor.execute('SELECT Id_Serviceman FROM Serviceman WHERE FIO = ? AND Date_of_birth = ?',(data[0],data[1])).fetchone()[0]
+        self.cursor.execute('DELETE FROM Weapon_and_serviceman WHERE Id_Serviceman = ?', (id_serviceman))
+        self.cursor.execute('DELETE FROM Serviceman WHERE Id_Serviceman = ?', (id_serviceman))
+        return 0
+        
+    
       
         
         

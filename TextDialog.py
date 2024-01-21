@@ -61,6 +61,23 @@ class TextDialogAdd(QDialog):
         list_weapon = name_weapon.split(",")
         list_weapon = [word.strip() for word in list_weapon]
         return [fio, date, branch_number, rank], list_weapon 
-'''Окно авторизации'''
+'''Окно удаленеия записи'''
+class TextDialogDelete(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Удаление записи")
+        self.label = QLabel("Введите ФИО военнослужащего и его дату рождения через пробел")
+        self.text_input = QLineEdit()
+        layout = QVBoxLayout()
+        layout.addWidget(self.label)
+        layout.addWidget(self.text_input)
+        self.setLayout(layout)
+        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+        layout.addWidget(button_box)
+    def get_text(self) -> str:
+        list_data = (self.text_input.text()).split(",")
+        return list_data
 
         

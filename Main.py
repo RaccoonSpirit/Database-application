@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (QMainWindow, QMenu, QApplication,
 from dbconect import dbworker
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import Qt
-from TextDialog import TextDialogAdd, TextDialogSearch
+from TextDialog import TextDialogAdd, TextDialogSearch, TextDialogDelete
 from TableModel import TableModel
 
 
@@ -45,8 +45,7 @@ class Login(QDialog):
 
 
 
-
-        
+       
 class MainWindow(QMainWindow):
     def __init__(self,db):
         super(MainWindow, self).__init__()
@@ -78,14 +77,18 @@ class MainWindow(QMainWindow):
         add_record = QAction('Добавить запись в бд', self)
         add_record.triggered.connect(self.data_add)
         
+        #Пункт удалить запись
+        delete_record = QAction('Удалить запись', self)
+        delete_record.triggered.connect(self.data_delete)
+        
         # Отображение всех пунктов меню в окне
         
         fileMenu.addAction(search_record)
         fileMenu.addAction(add_record)
+        fileMenu.addAction(delete_record)
         fileMenu.addMenu(output_table)
         self.setGeometry(500, 300, 750, 550)
         self.setWindowTitle('Приложение для работы с бд')
-    
     
     def data_search(self):
         
@@ -107,6 +110,15 @@ class MainWindow(QMainWindow):
             self.db.add_record(list_data[0],list_data[1])
             print(list_data)
     
+    def data_delete(self):
+        
+        #Удаление
+        
+        dialog = TextDialogDelete(self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            list_data = dialog.get_text()
+            self.db.delete_record(list_data)
+            
     def output_table(self, data:list, headers:list):
         
         # Метод выводящий таблицу
